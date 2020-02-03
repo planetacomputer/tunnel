@@ -232,12 +232,12 @@ Per aquest repte obrim un servei netcat en el servidor AWS (yum install nmap-nca
 Ens connectem des del client  
 `netcat ec2-35-175-200-4.compute-1.amazonaws.com 4444`\
 i podem sniffar des del proxy i veure el text amb la comanda:\
-`tcpdump -Aq -i eth0 tcp port 4444`
+`tcpdump -Aq -i eth0 tcp port 4444`\
 
-Per evitar això, crearem un túnel local estàtic entre el port 10125 del remot i el port 22 local (s'ha de permetre connexions a AWS per 10125):
+Per evitar això, crearem un túnel local estàtic entre el port 10125 del remot i el port 22 local (s'ha de permetre connexions a AWS per 10125):\
 
-`ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444
-nc localhost 10125`
+`ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444\
+nc localhost 10125`\
 
 Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexió):\
 `tcpdump -Aq -i eth0 tcp port 22`
