@@ -237,30 +237,30 @@ i podem sniffar des del proxy i veure el text amb la comanda:
 Per evitar això, crearem un túnel local estàtic entre el port 10125 del remot i el port 22 local (s'ha de permetre connexions a AWS per 10125):  
 `ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444
 nc localhost 10125`  
-Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexió):
+Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexió):  
 `tcpdump -Aq -i eth0 tcp port 22`
 
 #### Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)
 Comprovació
-	Arrenca dnshost de proxy i, mentre es fan peticions a diferents dominis des de client amb curl i ping, observa'ls a proxy:
-	`dnshost eth0 -l 3`
+	Arrenca dnshost de proxy i, mentre es fan peticions a diferents dominis des de client amb curl i ping, observa'ls a proxy:  
+	`dnshost eth0 -l 3`  
 	Descarrega la clau privada *tunel.pem* del servidor remot **i dona-li permisos 700**
-	Crea un túnel local dinàmic adient per poder fer peticions http:
-	`ssh -i tunel.pem -D 9090 -f -C -q -N ec2-user@35.175.200.4`
-	Comprova el nou port local 9090 en estat listen
-	`ss -ntulp`
-	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:
+	Crea un túnel local dinàmic adient per poder fer peticions http:  
+	`ssh -i tunel.pem -D 9090 -f -C -q -N ec2-user@35.175.200.4`  
+	Comprova el nou port local 9090 en estat listen  
+	`ss -ntulp`  
+	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:  
 	`curl --socks5-hostname localhost:9090 www.google.jp`
 
 #### Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
-Arrenquem el servidor web python al client (a la carpeta on fem això hem de tenir un index.html):
+Arrenquem el servidor web python al client (a la carpeta on fem això hem de tenir un index.html):  
 `python3 -m http.server 8000`
 
-Obrim el túnel invers (atenció obrir el port 8080 a AWS):
-`ssh -fN -R 0.0.0.0:8080:localhost:8000 -v -i tunel.pem ec2-user@35.175.200.4`
-o també
-`autossh -M 0 -N -R 0.0.0.0:8080:localhost:8000 ec2-user@35.175.200.4 -v -i tunel.pem`
-comprovacions a AWS_
+Obrim el túnel invers (atenció obrir el port 8080 a AWS):  
+`ssh -fN -R 0.0.0.0:8080:localhost:8000 -v -i tunel.pem ec2-user@35.175.200.4`  
+o també  
+`autossh -M 0 -N -R 0.0.0.0:8080:localhost:8000 ec2-user@35.175.200.4 -v -i tunel.pem`  
+comprovacions a AWS:  
 `iptables -L -n
 
 lsof -i :8080
