@@ -1,4 +1,4 @@
-<!-- vscode-markdown-toc -->
+
 		* 1. [Objectius](#Objectius)
 		* 2. [Conceptes](#Conceptes)
 		* 3. [Descarrega el projecte](#Descarregaelprojecte)
@@ -9,11 +9,8 @@
 		* 8. [Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)](#Repte2.Evitarsniffingdeproxysobrelespeticionswebdeclienttnellocaldinmic)
 		* 9. [Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)](#Repte3.ObrirainternetundeterminatportdunamquinadinsunaxarxaNATisensepossibilitatdemodificarproxytnelinvers)
 
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
+
+
 
 
 ####  1. <a name='Objectius'></a>Objectius
