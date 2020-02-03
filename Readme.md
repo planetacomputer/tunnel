@@ -1,19 +1,6 @@
+[TOC]
 
-		* 1. [Objectius](#Objectius)
-		* 2. [Conceptes](#Conceptes)
-		* 3. [Descarrega el projecte](#Descarregaelprojecte)
-		* 4. [Creació de la imatge](#Creacidelaimatge)
-		* 5. [Arrencada](#Arrencada)
-		* 6. [Connectivitat](#Connectivitat)
-		* 7. [Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)](#Repte1.Evitarsniffingdeproxysobrechatnetcatenundeterminatporttnellocalesttic)
-		* 8. [Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)](#Repte2.Evitarsniffingdeproxysobrelespeticionswebdeclienttnellocaldinmic)
-		* 9. [Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)](#Repte3.ObrirainternetundeterminatportdunamquinadinsunaxarxaNATisensepossibilitatdemodificarproxytnelinvers)
-
-
-
-
-
-####  1. <a name='Objectius'></a>Objectius
+#### Objectius
 
 - Conèixer els diferents tipus de túnels SSH (local estàtic, local dinàmic i revers) en un entorn Docker i en base a casuístiques d'ús basades en gestió de la seguretat. Per això es creen dos contenidors (proxy i client) sistemes operatius Ubuntu en una xarxa virtual. S'ha creat una configuració de xarxa en què les connexions de client s'enruten a través de *proxy*, de forma que amb els diversos sniffers instal·lats en aquest contenidors som capaços de veure les peticions de *client*. 
 1. Quin túnel ha d'establir *client* per tal d'evitar que *proxy* pugui veure les seves adreces url de connexió (curl)
@@ -22,22 +9,22 @@
 
 - Serà necessari que l'alumne disposi d'un altre servidor extern on dur a terme la creació de túnnels SSH;
 
-####  2. <a name='Conceptes'></a>Conceptes
+#### Conceptes
 - Docker Compose;
 - IPTables;
 - route -n;
 - Sniffing (dnshost, tcpdump, etc.);
 
-####  3. <a name='Descarregaelprojecte'></a>Descarrega el projecte
+#### Descarrega el projecte
         `git clone planetacomputer/tunnel`
-####  4. <a name='Creacidelaimatge'></a>Creació de la imatge
+#### Creació de la imatge
 - Fes el build del Docker per crear la imatge, la mateix en proxy i client:
         `docker build -t planetacomputer/tunnel .`
     
 - Comprova que s'ha creat amb la comanda:\
         docker images
     
-####  5. <a name='Arrencada'></a>Arrencada
+#### Arrencada
 - Executa l'script que arrenca els contenidors amb Docker Compose. NO cridis directament docker-compose perquè l'script conté algunes tasques més: 
         start-docker-compose.sh
     
@@ -45,7 +32,7 @@
 		docker exec -it client bash
 		docker exec -it proxy bash
     
-####  6. <a name='Connectivitat'></a>Connectivitat
+#### Connectivitat
 - Comprova que ambdos contenidors tenen connectivitat entre sí:
         ping client
 		ping proxy
@@ -61,7 +48,7 @@
 Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis:
 ![Alt text](images/traceroute.png?raw=true "Title")
 
-####  7. <a name='Repte1.Evitarsniffingdeproxysobrechatnetcatenundeterminatporttnellocalesttic'></a>Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
+#### Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
 Per aquest repte obrim un servei netcat en el servidor AWS (yum install nmap-ncat):  
 `netcat -l 4444`  
 Ens connectem des del client  
@@ -74,7 +61,7 @@ nc localhost 10125`
 Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexió):  
 `tcpdump -Aq -i eth0 tcp port 22`
 
-####  8. <a name='Repte2.Evitarsniffingdeproxysobrelespeticionswebdeclienttnellocaldinmic'></a>Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)
+#### Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)
 Comprovació  
 	Arrenca dnshost de proxy i, mentre es fan peticions a diferents dominis des de client amb curl i ping, observa'ls a proxy:  
 	`dnshost eth0 -l 3`  
@@ -86,7 +73,7 @@ Comprovació
 	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:  
 	`curl --socks5-hostname localhost:9090 www.google.jp`
 
-####  9. <a name='Repte3.ObrirainternetundeterminatportdunamquinadinsunaxarxaNATisensepossibilitatdemodificarproxytnelinvers'></a>Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
+#### Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
 Arrenquem el servidor web python al client (a la carpeta on fem això hem de tenir un index.html):  
 `python3 -m http.server 8000`
 
