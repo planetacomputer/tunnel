@@ -44,7 +44,7 @@
 			traceroute www.ub.edu
             ...
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
-`dnstop eth0 -l 3`
+`dnstop eth0 -l 3`  
 Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis:
 ![Alt text](images/traceroute.png?raw=true "Title")
 
