@@ -40,8 +40,8 @@
 		docker inspect proxy | grep IPAddress
 - Compara la taula de rutes d'ambdós contenidors i comenta-les. Executa traceroute a cadascuna d'elles i comenta la diferència:   
     editor.md/
-            route -n
-			traceroute www.ub.edu
+            route -n  
+	    traceroute www.ub.edu  
             ...
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
 `dnstop eth0 -l 3`  
