@@ -41,11 +41,12 @@
 - Compara la taula de rutes d'ambdós contenidors i comenta-les. Executa traceroute a cadascuna d'elles i comenta la diferència:  
             route -n  
 	    traceroute www.ub.edu  
+![Alt text](images/traceroute.png?raw=true "Title")
             
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
 `dnstop eth0 -l 3`  
-Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis:
-![Alt text](images/traceroute.png?raw=true "Title")
+Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis
+
 
 #### Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
 Per aquest repte obrim un servei netcat en el servidor AWS (yum install nmap-ncat):  
