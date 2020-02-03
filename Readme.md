@@ -4,8 +4,8 @@
 
 - Conèixer els diferents tipus de túnels SSH (local estàtic, local dinàmic i revers) en un entorn Docker i en base a casuístiques d'ús basades en gestió de la seguretat. Per això es creen dos contenidors (proxy i client) sistemes operatius Ubuntu en una xarxa virtual. S'ha creat una configuració de xarxa en què les connexions de client s'enruten a través de *proxy*, de forma que amb els diversos sniffers instal·lats en aquest contenidors som capaços de veure les peticions de *client*. 
 1. Quin túnel ha d'establir *client* per tal d'evitar que *proxy* pugui veure les seves adreces url de connexió (curl)
-1. Quin túnel ha d'establir *client* per tal d'evitar que *proxy* pugui veure el contingut dels seus missatges de chat amb la connexió nc
-1. Quin túnel ha d'establir *client* per tal de publicar la seva pàgina web de manera que pugui ser visible des de qualsevol dispositiu amb connexió a Internet?
+2. Quin túnel ha d'establir *client* per tal d'evitar que *proxy* pugui veure el contingut dels seus missatges de chat amb la connexió nc
+3. Quin túnel ha d'establir *client* per tal de publicar la seva pàgina web de manera que pugui ser visible des de qualsevol dispositiu amb connexió a Internet?
 
 - Serà necessari que l'alumne disposi d'un altre servidor extern on dur a terme la creació de túnnels SSH;
 
@@ -20,12 +20,12 @@
 #### Creació de la imatge
 - Fes el build del Docker per crear la imatge, la mateix en proxy i client:
         `docker build -t planetacomputer/tunnel .`
-
+    
 - Comprova que s'ha creat amb la comanda:
         docker images
     
 #### Arrencada
-- Executa l'script que els contenidors amb Docker Compose: 
+- Executa l'script que arrenca els contenidors amb Docker Compose. NO cridis directament docker-compose perquè l'script conté algunes tasques més: 
         start-docker-compose.sh
     
 - Introdueix-te en la consola bash d'ambdós contenidors, cada un en un terminal diferent:
@@ -43,7 +43,10 @@
             route -n
 			traceroute www.ub.edu
             ...
-```
+- Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:
+`dnstop eth0 -l 3`
+Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis:
+![Alt text](images/traceroute.png?raw=true "Title")
 
 #### Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
 Per aquest repte obrim un servei netcat en el servidor AWS (yum install nmap-ncat):
