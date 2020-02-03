@@ -63,15 +63,15 @@ Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexi
 `tcpdump -Aq -i eth0 tcp port 22`
 
 #### Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)
-	- Comprovació
+Comprovació
 	Arrenca dnshost de proxy i, mentre es fan peticions a diferents dominis des de client amb curl i ping, observa'ls a proxy:
 	`dnshost eth0 -l 3`
-	- Descarrega la clau privada *tunel.pem* del servidor remot **i dona-li permisos 700**
-	- Crea un túnel local dinàmic adient per poder fer peticions http:
+	Descarrega la clau privada *tunel.pem* del servidor remot **i dona-li permisos 700**
+	Crea un túnel local dinàmic adient per poder fer peticions http:
 	`ssh -i tunel.pem -D 9090 -f -C -q -N ec2-user@35.175.200.4`
 	Comprova el nou port local 9090 en estat listen
 	`ss -ntulp`
-	- Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:
+	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:
 	`curl --socks5-hostname localhost:9090 www.google.jp`
 
 #### Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
