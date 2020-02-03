@@ -1,0 +1,33 @@
+version: '2'
+services:
+    client:
+        container_name: client
+        restart: always
+        privileged: true
+        image: planetacomputer/tunnel
+        #ports:
+        #  - "80"
+        networks:
+            vpcbr:
+                ipv4_address: 10.6.0.5
+        tty: true
+        #command: bash -c "sleep 5" 
+
+    proxy:
+        container_name: proxy
+        restart: always
+        privileged: true
+        image: planetacomputer/tunnel
+        networks:
+            vpcbr:
+                ipv4_address: 10.6.0.6
+        tty: true
+        #command: bash -c "sleep 5 && /usr/local/bin/proxy.sh"
+
+networks:
+    vpcbr:
+        driver: bridge
+        ipam:
+          config:
+            - subnet: 10.6.0.0/16
+              gateway: 10.6.0.1
