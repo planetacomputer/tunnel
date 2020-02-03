@@ -49,7 +49,7 @@ Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolen
 
 #### Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
 Per aquest repte obrim un servei netcat en el servidor AWS (yum install nmap-ncat):  
-`netcat -l 4444`  
+`nc -l 4444`  
 Ens connectem des del client  
 `netcat ec2-35-175-200-4.compute-1.amazonaws.com 4444`  
 i podem sniffar des del proxy i veure el text amb la comanda:  
@@ -57,8 +57,11 @@ i podem sniffar des del proxy i veure el text amb la comanda:
 Per evitar això, crearem un túnel local estàtic entre el port 10125 del remot i el port 22 local (s'ha de permetre connexions a AWS per 10125):  
 `ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444
 nc localhost 10125`  
-Tornem a aplicar sniffer sobre el port 22 (sobre els altres no hi ha cap connexió):  
-`tcpdump -Aq -i eth0 tcp port 22`
+El client ara s'ha de connectar al port 10125 del local
+`netcat localhost 10125`
+Tornem a aplicar sniffer sobre el port 22 (sobre 4444 no hi ha cap connexió):  
+`tcpdump -Aq -i eth0 tcp port 22`  
+... però els missatges sortiran encriptats.
 
 #### Repte 2. Evitar sniffing de proxy sobre les peticions web de client (túnel local dinàmic)
 Comprovació  
@@ -71,6 +74,7 @@ Comprovació
 	`ss -ntulp`  
 	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:  
 	`curl --socks5-hostname localhost:9090 www.google.jp`
+	De nou el proxy no veurà les peticions per dnstop, donat que les realitza la màquina AWS. Si sniffem el port 80 amb tcpdump no hi ha tràfic. Tot passa pel port 22... encriptat.
 
 #### Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
 Arrenquem el servidor web python al client (a la carpeta on fem això hem de tenir un index.html):  
