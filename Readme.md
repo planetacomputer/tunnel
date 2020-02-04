@@ -40,7 +40,7 @@
 		`docker inspect proxy | grep IPAddress` \
 - Compara la taula de rutes d'ambdós contenidors i comenta-les. Executa traceroute a cadascuna d'elles i comenta la diferència:  
             `route -n`\
-	    traceroute 8.8.8.8\
+	    `traceroute 8.8.8.8`\
 ![Alt text](images/traceroute.png?raw=true "Title")
             
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
@@ -56,10 +56,10 @@ Ens connectem des del client
 i podem sniffar des del proxy i veure el text amb la comanda:  
 `tcpdump -Aq -i eth0 tcp port 4444`  
 Per evitar això, crearem un túnel local estàtic entre el port 10125 del remot i el port 22 local (s'ha de permetre connexions a AWS per 10125):  
-`ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444
-nc localhost 10125`  
+`ssh -N -f -i tunel.pem ec2-user@35.175.200.4 -L 10125:35.175.200.4:4444`\
+`nc localhost 10125`\  
 El client ara s'ha de connectar al port 10125 del local
-`netcat localhost 10125`
+`netcat localhost 10125`\
 Tornem a aplicar sniffer sobre el port 22 (sobre 4444 no hi ha cap connexió):  
 `tcpdump -Aq -i eth0 tcp port 22`  
 ... però els missatges sortiran encriptats.
