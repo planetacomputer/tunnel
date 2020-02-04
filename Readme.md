@@ -26,21 +26,21 @@
     
 #### Arrencada
 - Executa l'script que arrenca els contenidors amb Docker Compose. NO cridis directament docker-compose perquè l'script conté algunes tasques més: 
-        start-docker-compose.sh
+        `./start-docker-compose.sh`\
     
-- Introdueix-te en la consola bash d'ambdós contenidors, cada un en un terminal diferent:
+- Introdueix-te en la consola bash d'ambdós contenidors, cada un en un terminal diferent:\
 		`docker exec -it client bash`\
-		`docker exec -it proxy bash`
+		`docker exec -it proxy bash`\
     
 #### Connectivitat
 - Comprova que ambdos contenidors tenen connectivitat entre sí:
-        ping client
-		ping proxy
-		docker inspect client | grep IPAddress
-		docker inspect proxy | grep IPAddress
+        	`ping client`\
+		`ping proxy` \
+		`docker inspect client | grep IPAddress`\
+		`docker inspect proxy | grep IPAddress` \
 - Compara la taula de rutes d'ambdós contenidors i comenta-les. Executa traceroute a cadascuna d'elles i comenta la diferència:  
-            route -n  
-	    traceroute 8.8.8.8  
+            `route -n`\
+	    traceroute 8.8.8.8\
 ![Alt text](images/traceroute.png?raw=true "Title")
             
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
