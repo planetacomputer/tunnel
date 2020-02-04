@@ -29,7 +29,7 @@
         start-docker-compose.sh
     
 - Introdueix-te en la consola bash d'ambdós contenidors, cada un en un terminal diferent:
-		`docker exec -it client bash`
+		`docker exec -it client bash`\
 		`docker exec -it proxy bash`
     
 #### Connectivitat
