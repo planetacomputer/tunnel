@@ -16,13 +16,13 @@
 - Sniffing (dnshost, tcpdump, etc.);
 
 #### Descarrega el projecte
-        `git clone planetacomputer/tunnel`
+         `git clone planetacomputer/tunnel`
 #### Creació de la imatge
 - Fes el build del Docker per crear la imatge, la mateix en proxy i client:
         `docker build -t planetacomputer/tunnel .`
     
 - Comprova que s'ha creat amb la comanda:\
-        docker images
+        `docker images`
     
 #### Arrencada
 - Executa l'script que arrenca els contenidors amb Docker Compose. NO cridis directament docker-compose perquè l'script conté algunes tasques més: 
@@ -45,7 +45,7 @@
             
 - Per comprovar que el tràfic de client passa per proxy, iniciem en aquest últim dnstop:  
 `dnstop eth0 -l 3`  
-Un cop arrencat amb la tecla 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis
+Un cop arrencat amb la tecla num 3 podrem veure el llistat de dominis que va resolent, i que aniran apareixent a mesura que client va fent pings o curls a dominis.
 
 
 #### Repte 1. Evitar sniffing de proxy sobre chat netcat en un determinat port (túnel local estàtic)
@@ -68,13 +68,13 @@ Tornem a aplicar sniffer sobre el port 22 (sobre 4444 no hi ha cap connexió):
 Comprovació  
 	Arrenca dnshost de proxy i, mentre es fan peticions a diferents dominis des de client amb curl i ping, observa'ls a proxy:  
 	`dnshost eth0 -l 3`  
-	Descarrega la clau privada *tunel.pem* del servidor remot **i dona-li permisos 700**
+	Descarrega la clau privada *tunel.pem* del servidor remot **i dona-li permisos 400**
 	Crea un túnel local dinàmic adient per poder fer peticions http:  
 	`ssh -i tunel.pem -D 9090 -f -C -q -N ec2-user@35.175.200.4`  
 	Comprova el nou port local 9090 en estat listen  
 	`ss -ntulp`  
 	Fes servir curl amb l'opció socks i comprova que el dnstop del proxy ja no és capaç de veure l'adreça demanada:  
-	`curl --socks5-hostname localhost:9090 www.google.jp`
+	`curl --socks5-hostname localhost:9090 www.google.jp`\
 	De nou el proxy no veurà les peticions per dnstop, donat que les realitza la màquina AWS. Si sniffem el port 80 amb tcpdump no hi ha tràfic. Tot passa pel port 22... encriptat.
 
 #### Repte 3. Obrir a internet un determinat port d'una màquina dins una xarxa NAT, i sense possibilitat de modificar proxy (túnel invers)
@@ -85,7 +85,7 @@ Obrim el túnel invers (atenció obrir el port 8080 a AWS):
 `ssh -fN -R 0.0.0.0:8080:localhost:8000 -v -i tunel.pem ec2-user@35.175.200.4`\
 o també  
 `autossh -M 0 -N -R 0.0.0.0:8080:localhost:8000 ec2-user@35.175.200.4 -v -i tunel.pem`  
-comprovacions a AWS_
+comprovacions a AWS:\
 `iptables -L -n`
 
 `lsof -i :8080`
